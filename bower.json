@@ -1,7 +1,7 @@
 {
-  "name": "jquery-todo-list",
-  "private": true,
-  "dependencies": {
-    "jquery": "~1.11.1"
-  }
+    "name": "jquery-todo-list",
+    "private": true,
+    "dependencies": {
+        "jquery": "~1.11.1"
+    }
 }
