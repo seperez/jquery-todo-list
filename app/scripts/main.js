@@ -1,1 +1,8 @@
-console.log('\'Allo \'Allo!');
+'use strict';
+
+$(function(){
+    var myTodoList = new Todo();
+});
+
+
+
