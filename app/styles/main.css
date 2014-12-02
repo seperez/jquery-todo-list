@@ -82,12 +82,7 @@ body {
     border-bottom: none;
 }
 
-.todo-list li.done label {
-    color: #777777;
-    text-decoration: line-through;
-}
-
-.todo-list .destroy {
+.todo-list .todo-item-remove {
     position: absolute;
     right: 5px;
     top: 20px;
@@ -98,11 +93,11 @@ body {
     background: url(../images/destroy.png) no-repeat;
 }
 
-.todo-list li:hover .destroy {
+.todo-list li:hover .todo-item-remove {
     display: block;
 }
 
-.todo-list .destroy:hover {
+.todo-list .todo-item-remove:hover {
     background-position: 0 -20px;
 }
 
@@ -123,11 +118,17 @@ body {
     margin: 0;
 }
 
-.todo-list li.editing .view {
+.todo-list li.editing .todo-item {
     display: none;
 }
 
-.todo-list li .view label {
+.todo-list .todo-item-toggle-done:checked + label{
+    color: #777777;
+    text-decoration: line-through;
+}
+
+.todo-list li .todo-item label {
+    margin-left: 10px;
     word-break: break-word;
 }
 

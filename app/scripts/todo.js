@@ -10,7 +10,8 @@ var Todo = function(options){
     this.options = $.extend(options, {
         todoAppEl: '.todo-app',
         inputEl: '.todo-input',  
-        listEl: '.todo-list'
+        listEl: '.todo-list',
+        removeEl: '.todo-item-remove'
     });
 
     this.$app = $(this.options.todoAppEl);
@@ -20,6 +21,7 @@ var Todo = function(options){
 
     this.bindEvents = function(){
         this.$app.on('keypress', this.options.inputEl, this, this.add);
+        this.$app.on('click', this.options.removeEl, this, this.remove);
     };
 
     this.bindEvents();
@@ -32,10 +34,10 @@ Todo.prototype.add = function(event){
 
         var todoItem = 
                 '<li>' +
-                    '<div class="view">' +
-                        '<input class="toggle" type="checkbox">' +
-                        '<label data="">' + ' ' + that.$input.val() + '</label>' +
-                        '<a class="destroy"></a>' +
+                    '<div class="todo-item">' +
+                        '<input class="todo-item-toggle-done" type="checkbox">' +
+                        '<label>' + that.$input.val() + '</label>' +
+                        '<a href="#" class="todo-item-remove"></a>' +
                     '</div>' +
                 '</li>';
 
@@ -44,8 +46,9 @@ Todo.prototype.add = function(event){
     }
 };
 
-Todo.prototype.remove = function(){
-    console.log('remove');  
+Todo.prototype.remove = function(event){
+    event.preventDefault();
+    $(this).closest('li').remove();
 };
 
 Todo.prototype.done = function(){
