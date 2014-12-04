@@ -56,6 +56,8 @@ Todo.prototype.add = function(event){
 };
 
 Todo.prototype.remove = function(event){
+    var that = event.data;
+    
     event.preventDefault();
     $(this).closest('li').remove();
     that.$app.trigger('changeData');
@@ -100,7 +102,7 @@ Todo.prototype.save = function(event){
 
 Todo.prototype.showSavedData = function(){
     var that = this;
-    
+
     if(localStorage.items){
         var items = JSON.parse(localStorage.items);
 
