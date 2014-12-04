@@ -12,7 +12,8 @@ var Todo = function(options){
         inputEl: '.todo-input',  
         listEl: '.todo-list',
         removeEl: '.todo-item-remove',
-        doneEl: '.todo-item-toggle-done'
+        doneEl: '.todo-item-toggle-done',
+        clearEl: '.clear-done'
     });
 
     this.$app = $(this.options.todoAppEl);
@@ -24,6 +25,7 @@ var Todo = function(options){
         this.$app.on('keypress', this.options.inputEl, this, this.add);
         this.$app.on('click', this.options.removeEl, this, this.remove);
         this.$app.on('click', this.options.doneEl, this, this.toggleDone);
+        this.$app.on('click', this.options.clearEl, this, this.clearDone);
     };
 
     this.bindEvents();
@@ -45,6 +47,7 @@ Todo.prototype.add = function(event){
 
         that.$list.append(todoItem);
         that.$input.val('');
+
     }
 };
 
@@ -57,12 +60,19 @@ Todo.prototype.toggleDone = function(event){
     var that = event.data;
 
     if($(this).is(':checked')){
-        $(this).closest('li').appendTo(that.$list);
+        var $li = $(this).closest('li');
+
+        $li.appendTo(that.$list);
+        $li.attr('data-done', 'true');
+
     }else{
         $(this).closest('li').prependTo(that.$list);
     }
 };
 
-Todo.prototype.clear = function(){
-    console.log('clear');
+Todo.prototype.clearDone = function(event){
+    var that = event.data;
+    that.$list.children('[data-done="true"]').remove();
 };
+
+
