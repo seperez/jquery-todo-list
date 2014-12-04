@@ -26,9 +26,12 @@ var Todo = function(options){
         this.$app.on('click', this.options.removeEl, this, this.remove);
         this.$app.on('click', this.options.doneEl, this, this.toggleDone);
         this.$app.on('click', this.options.clearEl, this, this.clearDone);
+
+        this.$app.on('changeData', '', this, this.save);
     };
 
     this.bindEvents();
+    this.showSavedData();
 };
 
 Todo.prototype.add = function(event){
@@ -48,12 +51,14 @@ Todo.prototype.add = function(event){
         that.$list.append(todoItem);
         that.$input.val('');
 
+        that.$app.trigger('changeData');
     }
 };
 
 Todo.prototype.remove = function(event){
     event.preventDefault();
     $(this).closest('li').remove();
+    that.$app.trigger('changeData');
 };
 
 Todo.prototype.toggleDone = function(event){
@@ -68,11 +73,50 @@ Todo.prototype.toggleDone = function(event){
     }else{
         $(this).closest('li').prependTo(that.$list);
     }
+
+    that.$app.trigger('changeData');
 };
 
 Todo.prototype.clearDone = function(event){
     var that = event.data;
     that.$list.children('[data-done="true"]').remove();
+    that.$app.trigger('changeData');
 };
 
+Todo.prototype.save = function(event){
+    var that = event.data;
+    var items = [];
+    that.$list.children().each(function(key, item){
+        var $item = $(item);
+
+        items.push({
+            description: $item.find('label').text(),
+            done: $item.find('.todo-item-toggle-done').is(':checked')
+        });
+    });
+
+    localStorage.items = JSON.stringify(items);
+}
+
+Todo.prototype.showSavedData = function(){
+    var that = this;
+    
+    if(localStorage.items){
+        var items = JSON.parse(localStorage.items);
+
+        $.each(items, function(key, item){
+            var checked = item.done ? 'checked' : '',
+                todoItem = 
+                '<li>' +
+                    '<div class="todo-item">' +
+                        '<input class="todo-item-toggle-done" type="checkbox" data-done="' + item.done + '" ' + checked + '>' +
+                        '<label>' + item.description + '</label>' +
+                        '<a href="#" class="todo-item-remove"></a>' +
+                    '</div>' +
+                '</li>';
+
+            that.$list.append(todoItem);
+        });
+    }
+}
 
